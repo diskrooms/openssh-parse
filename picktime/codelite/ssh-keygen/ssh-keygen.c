@@ -2323,6 +2323,26 @@ usage(void)
 	exit(1);
 }
 
+/**
+ * 两次输入密码短语不一致 则要求用户重新输入
+ * read_passphrase 实现位于readpass.c / 189行
+ */
+void passphrase_agin(char *passphrase1,char *passphrase2){
+	passphrase1 = read_passphrase("Enter passphrase (empty for no passphrase): ", RP_ALLOW_STDIN);
+	passphrase2 = read_passphrase("Enter passphrase (empty for no passphrase): ", RP_ALLOW_STDIN);
+	if(strcmp(passphrase1,passphrase2) != 0){
+			explicit_bzero(passphrase1, strlen(passphrase1));
+			explicit_bzero(passphrase2, strlen(passphrase2));
+			free(passphrase1);
+			free(passphrase2);
+			printf("Passphrases do not match.  Try again.\n");
+			passphrase_agin(passphrase1,passphrase2);
+	}
+	/* Clear the other copy of the passphrase. */
+	explicit_bzero(passphrase2, strlen(passphrase2));
+	free(passphrase2);
+}
+
 /*
  * Main program for key management.
  */
@@ -2729,13 +2749,13 @@ main(int argc, char **argv)
 	type_bits_valid(type, key_type_name, &bits);		//according the key_type to return the length of THE KEY
 	if (!quiet)
 		printf("Generating public/private %s key pair.\n",key_type_name);
-	if ((r = sshkey_generate(type, bits, &private)) != 0)
+	if ((r = sshkey_generate(type, bits, &private)) != 0)		//产生私钥
 		fatal("sshkey_generate failed");
-	if ((r = sshkey_from_private(private, &public)) != 0)
+	if ((r = sshkey_from_private(private, &public)) != 0)		//由私钥产生公钥
 		fatal("sshkey_from_private failed: %s\n", ssh_err(r));
 
 	if (!have_identity)
-		ask_filename(pw, "Enter file in which to save the key");		//sure the filename of the key
+		ask_filename(pw, "Enter file in which to save the key");		//ensure the filename of the key
 
 	/* Create ~/.ssh directory if it doesn't already exist. */
 	snprintf(dotsshdir, sizeof dotsshdir, "%s/%s",	//写入dotsshdir 
@@ -2779,10 +2799,10 @@ passphrase_again:
 		passphrase2 = read_passphrase("Enter same passphrase again: ",
 		    RP_ALLOW_STDIN);
 		if (strcmp(passphrase1, passphrase2) != 0) {
-			/*
-			 * The passphrases do not match.  Clear them and
-			 * retry.
-			 */
+			//
+			 // The passphrases do not match.  Clear them and
+			 // retry.
+			 //
 			explicit_bzero(passphrase1, strlen(passphrase1));
 			explicit_bzero(passphrase2, strlen(passphrase2));
 			free(passphrase1);
@@ -2790,16 +2810,19 @@ passphrase_again:
 			printf("Passphrases do not match.  Try again.\n");
 			goto passphrase_again;
 		}
-		/* Clear the other copy of the passphrase. */
+		// Clear the other copy of the passphrase.
 		explicit_bzero(passphrase2, strlen(passphrase2));
 		free(passphrase2);
+		//passphrase_again(passphrase1,passphrase2);			//将验证二次密码的功能封装进了一个函数，与 Goto是一致的。但是涉及函数递归调用
+																																	//可能会加快栈资源的消耗。其实在某些情况下 只要使用得当，Goto是可以极大提高效率的
 	}
 
+	//-C
 	if (identity_comment) {
-		strlcpy(comment, identity_comment, sizeof(comment));
+		strlcpy(comment, identity_comment, sizeof(comment));		//char comment[1024]
 	} else {
 		/* Create default comment field for the passphrase. */
-		snprintf(comment, sizeof comment, "%s@%s", pw->pw_name, hostname);
+		snprintf(comment, sizeof comment, "%s@%s", pw->pw_name, hostname);//用户没有输入comment则使用  "用户名@主机名"作为comment
 	}
 
 	/* Save the key with the given passphrase and comment. */
