@@ -3631,8 +3631,7 @@ sshkey_private_pem_to_blob(struct sshkey *key, struct sshbuf *blob,
 		break;
 #endif
 	case KEY_RSA:
-		success = PEM_write_bio_RSAPrivateKey(bio, key->rsa,
-		    cipher, passphrase, len, NULL, NULL);
+		success = PEM_write_bio_RSAPrivateKey(bio, key->rsa,cipher, passphrase, len, NULL, NULL);	//函数实现位于 /usr/lib64/libcrypto.so
 		break;
 	default:
 		success = 0;

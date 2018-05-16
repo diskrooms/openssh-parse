@@ -1,0 +1,97 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+O_SRCS := 
+C_SRCS := 
+S_UPPER_SRCS := 
+OBJ_SRCS := 
+ASM_SRCS := 
+OBJS := 
+C_DEPS := 
+EXECUTABLES := 
+
+# Every subdirectory with source files must be described here
+SUBDIRS := \
+test \
+test/testutil \
+ssl \
+ssl/statem \
+ssl/record \
+ms \
+fuzz \
+engines \
+demos/smime \
+demos/pkcs12 \
+demos/evp \
+demos/cms \
+demos/bio \
+crypto/x509v3 \
+crypto/x509 \
+crypto/whrlpool \
+crypto \
+crypto/ui \
+crypto/txt_db \
+crypto/ts \
+crypto/store \
+crypto/stack \
+crypto/srp \
+crypto/sm4 \
+crypto/sm3 \
+crypto/sm2 \
+crypto/siphash \
+crypto/sha \
+crypto/seed \
+crypto/rsa \
+crypto/ripemd \
+crypto/rc5 \
+crypto/rc4 \
+crypto/rc2 \
+crypto/rand \
+crypto/poly1305 \
+crypto/pkcs7 \
+crypto/pkcs12 \
+crypto/pem \
+crypto/ocsp \
+crypto/objects \
+crypto/modes \
+crypto/mdc2 \
+crypto/md5 \
+crypto/md4 \
+crypto/md2 \
+crypto/lhash \
+crypto/kdf \
+crypto/idea \
+crypto/hmac \
+crypto/evp \
+crypto/err \
+crypto/engine \
+crypto/ec \
+crypto/ec/curve448 \
+crypto/ec/curve448/arch_32 \
+crypto/dso \
+crypto/dsa \
+crypto/dh \
+crypto/des \
+crypto/ct \
+crypto/conf \
+crypto/comp \
+crypto/cms \
+crypto/cmac \
+crypto/chacha \
+crypto/cast \
+crypto/camellia \
+crypto/buffer \
+crypto/bn \
+crypto/bn/asm \
+crypto/blake2 \
+crypto/bio \
+crypto/bf \
+crypto/async \
+crypto/async/arch \
+crypto/asn1 \
+crypto/aria \
+crypto/aes/asm \
+crypto/aes \
+apps \
+
